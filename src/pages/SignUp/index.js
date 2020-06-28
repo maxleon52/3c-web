@@ -1,11 +1,31 @@
 import React from "react";
+import { Form } from "@unform/web";
+import * as Yup from "yup";
+import Input from "../../components/Input";
 import { FiArrowLeft } from "react-icons/fi";
+
 import { Container, Background, Content } from "./styles";
 
 import bgLogin from "../../assets/background-signup.png";
 import handCard from "../../assets/hand-card.svg";
 
 function SignUp() {
+  async function handleSubimit(data) {
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required("Nome obrigatório"),
+        email: Yup.string().required("E-mail obrigatório").email(),
+        password: Yup.string()
+          .required("Senha obrigatória")
+          .min(6, "No mínimo 6 dígitos"),
+      });
+
+      await schema.validate(data, { abortEarly: false });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <Container>
       <Content>
@@ -13,13 +33,13 @@ function SignUp() {
           <img src={handCard} alt="" />
           <h1>Controle Cartão de Crédito</h1>
 
-          <form>
-            <input type="text" placeholder="Nome" />
-            <input type="text" placeholder="E-mail" />
-            <input type="password" placeholder="Senha" />
+          <Form onSubmit={handleSubimit}>
+            <Input name="name" type="text" placeholder="Nome" />
+            <Input name="email" type="email" placeholder="E-mail" />
+            <Input name="password" type="password" placeholder="Senha" />
 
             <button type="submit">Criar conta</button>
-          </form>
+          </Form>
 
           <a href="#">
             <FiArrowLeft /> Já tenho conta
