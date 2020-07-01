@@ -13,5 +13,12 @@ export default function Input({ name, ...rest }) {
     });
   }, [fieldName, registerField]);
 
-  return <input ref={inputRef} {...rest} />;
+  return (
+    <>
+      {error && (
+        <span style={{ color: "#f00", padding: "8px 0 8px 0 " }}>{error}</span>
+      )}
+      <input ref={inputRef} {...rest} />
+    </>
+  );
 }
