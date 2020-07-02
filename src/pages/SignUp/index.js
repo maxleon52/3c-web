@@ -17,7 +17,9 @@ function SignUp() {
     try {
       const schema = Yup.object().shape({
         name: Yup.string().required("Nome obrigatório"),
-        email: Yup.string().required("E-mail obrigatório").email(),
+        email: Yup.string()
+          .required("E-mail obrigatório")
+          .email("Favor inserir um e-mail válido."),
         password: Yup.string()
           .required("Senha obrigatória")
           .min(6, "No mínimo 6 dígitos"),
@@ -25,6 +27,8 @@ function SignUp() {
 
       await schema.validate(data, { abortEarly: false });
 
+      formRef.current.setErrors({});
+      setErr("");
       reset();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
