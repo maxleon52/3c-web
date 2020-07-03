@@ -40,7 +40,7 @@ export const Content = styled.div`
     flex-direction: column;
     align-items: center;
     width: 413px;
-    height: 451px;
+    height: ${(props) => (props.err === "" ? "451px" : "501px")};
     background-color: #546e7a;
     border-radius: 8px;
 
