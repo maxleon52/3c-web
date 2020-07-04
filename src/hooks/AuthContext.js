@@ -1,10 +1,12 @@
 import React, { createContext, useCallback, useState, useContext } from "react";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   // a função anonima dentro do state, só sera executado caso o user faço refresh no app
+  // esse data é o dados do usuário
   const [data, setData] = useState(() => {
     const token = localStorage.getItem("@3c:token");
     const user = localStorage.getItem("@3c:user");
@@ -17,15 +19,19 @@ function AuthProvider({ children }) {
   });
 
   // Metado para fazer login
-  const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post("/session", { email, password });
+  const signIn = useCallback(
+    async ({ email, password }) => {
+      const response = await api.post("/session", { email, password });
 
-    const { token, user } = response.data;
-    localStorage.setItem("@3c:token", token);
-    localStorage.setItem("@3c:user", JSON.stringify(user));
+      const { token, user } = response.data;
+      localStorage.setItem("@3c:token", token);
+      localStorage.setItem("@3c:user", JSON.stringify(user));
 
-    setData({ token, user });
-  }, []);
+      setData({ token, user });
+      toast.success(`Bem-vindo(a) ${data.user.name}`);
+    },
+    [data.user.name]
+  );
 
   const signOut = useCallback(() => {
     localStorage.removeItem("@3c:token");

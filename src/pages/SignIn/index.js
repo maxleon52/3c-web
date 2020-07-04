@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 import { useAuth } from "../../hooks/AuthContext";
 
@@ -48,7 +49,10 @@ function SignIn() {
 
         formRef.current.setErrors(errorMessages);
         setErr(errorMessages);
+        toast.error("Falha na autenticação, verifique seus dados.");
         // console.log(formRef);
+      } else {
+        toast.info("Houve um erro inesperado, contate o suporte.");
       }
     }
   }
