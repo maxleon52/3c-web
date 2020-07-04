@@ -1,9 +1,9 @@
-import React, { createContext, useCallback, useState } from "react";
+import React, { createContext, useCallback, useState, useContext } from "react";
 import api from "../services/api";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
+function AuthProvider({ children }) {
   // a função anonima dentro do state, só sera executado caso o user faço refresh no app
   const [data, setData] = useState(() => {
     const token = localStorage.getItem("@3c:token");
@@ -15,6 +15,8 @@ export function AuthProvider({ children }) {
 
     return {};
   });
+
+  // Metado para fazer login
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post("/session", { email, password });
 
@@ -25,9 +27,31 @@ export function AuthProvider({ children }) {
     setData({ token, user });
   }, []);
 
+  const signOut = useCallback(() => {
+    localStorage.removeItem("@3c:token");
+    localStorage.removeItem("@3c:user");
+
+    setData({});
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 }
+
+// Metodo que verific a se o provider esta setado no APP
+function useAuth() {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error(
+      "Verifique se o provider está por volda dos componentes no arquivo APP"
+    );
+  }
+
+  return context;
+}
+
+export { AuthProvider, useAuth };

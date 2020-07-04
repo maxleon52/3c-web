@@ -1,8 +1,8 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
 
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/AuthContext";
 
 import Input from "../../components/Input";
 import { FiLogIn } from "react-icons/fi";
@@ -15,7 +15,7 @@ function SignIn() {
   const [err, setErr] = useState("");
   const formRef = useRef(null);
 
-  const { user, signIn } = useContext(AuthContext); // Substitui o Redux
+  const { user, signIn } = useAuth(); // Contexto de auth
   console.log(user);
 
   async function handleSubimit(data, { reset }) {
@@ -29,6 +29,7 @@ function SignIn() {
 
       await schema.validate(data, { abortEarly: false });
 
+      // Faz a chamada a rota "/session" através do contextoAPI
       signIn({
         email: data.email,
         password: data.password,
