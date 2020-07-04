@@ -16,7 +16,9 @@ export default function Input({ name, ...rest }) {
   return (
     <>
       {error && (
-        <span style={{ color: "#f00", padding: "8px 0 8px 0 " }}>{error}</span>
+        <strong style={{ color: "#e57373", padding: "8px 0 8px 0 " }}>
+          {error}
+        </strong>
       )}
       <input ref={inputRef} {...rest} />
     </>

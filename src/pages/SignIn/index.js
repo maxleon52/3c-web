@@ -1,6 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
+
+import { AuthContext } from "../../context/AuthContext";
+
 import Input from "../../components/Input";
 import { FiLogIn } from "react-icons/fi";
 import { Container, Background, Content } from "./styles";
@@ -12,6 +15,9 @@ function SignIn() {
   const [err, setErr] = useState("");
   const formRef = useRef(null);
 
+  const { user, signIn } = useContext(AuthContext); // Substitui o Redux
+  console.log(user);
+
   async function handleSubimit(data, { reset }) {
     try {
       const schema = Yup.object().shape({
@@ -22,6 +28,11 @@ function SignIn() {
       });
 
       await schema.validate(data, { abortEarly: false });
+
+      signIn({
+        email: data.email,
+        password: data.password,
+      });
 
       formRef.current.setErrors({});
       setErr("");
