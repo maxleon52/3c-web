@@ -5,7 +5,7 @@ import api from "../services/api";
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  // a função anonima dentro do state, só sera executado caso o user faço refresh no app
+  // a função anônima dentro do state, só sera executado caso o user faço refresh no app
   // esse data é o dados do usuário
   const [data, setData] = useState(() => {
     const token = localStorage.getItem("@3c:token");

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
+import api from "../../services/api";
 import Input from "../../components/Input";
 import { FiArrowLeft } from "react-icons/fi";
 
@@ -9,10 +10,12 @@ import { Container, Background, Content, AnimationConteiner } from "./styles";
 
 import bgLogin from "../../assets/background-signup.png";
 import handCard from "../../assets/hand-card.svg";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [err, setErr] = useState("");
   const formRef = useRef(null);
+  const history = useHistory();
 
   async function handleSubimit(data, { reset }) {
     try {
@@ -31,6 +34,10 @@ function SignUp() {
       formRef.current.setErrors({});
       setErr("");
       reset();
+
+      await api.post("/user", data);
+      toast.success("Cadastrado criado com sucesso.");
+      history.push("/");
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -42,7 +49,9 @@ function SignUp() {
         formRef.current.setErrors(errorMessages);
         setErr(errorMessages);
         // console.log(formRef);
+        return;
       }
+      toast.info("Houve um erro inesperado, contate o suporte");
     }
   }
 
