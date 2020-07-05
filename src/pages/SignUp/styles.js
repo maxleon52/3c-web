@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { shade } from "polished";
 
 export const Container = styled.div`
@@ -34,13 +34,27 @@ export const Content = styled.div`
   max-width: 800px;
   background-color: #cddc39;
   /* border: 2px solid green; */
+`;
 
+const appearFromLeft = keyframes`
+  from{
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to{
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+export const AnimationConteiner = styled.div`
   div {
+    animation: ${appearFromLeft} 1s;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 413px;
-    height: ${(props) => (props.err === "" ? "471px" : "601px")};
+    height: ${(props) => (props.err === "" ? "471px" : "551px")};
     background-color: #546e7a;
     border-radius: 8px;
 

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -7,7 +8,8 @@ import { useAuth } from "../../hooks/AuthContext";
 
 import Input from "../../components/Input";
 import { FiLogIn } from "react-icons/fi";
-import { Container, Background, Content } from "./styles";
+
+import { Container, Background, Content, AnimationConteiner } from "./styles";
 
 import bgLogin from "../../assets/background-login.png";
 import handCard from "../../assets/hand-card.svg";
@@ -63,24 +65,26 @@ function SignIn() {
         <img src={bgLogin} alt="imagem login" />
       </Background>
 
-      <Content err={err}>
-        <div>
-          <img src={handCard} alt="" />
-          <h1>Controle Cartão de Crédito</h1>
+      <Content>
+        <AnimationConteiner err={err}>
+          <div>
+            <img src={handCard} alt="" />
+            <h1>Controle Cartão de Crédito</h1>
 
-          <Form ref={formRef} onSubmit={handleSubimit}>
-            <Input name="email" type="text" placeholder="E-mail" />
-            <Input name="password" type="password" placeholder="Senha" />
+            <Form ref={formRef} onSubmit={handleSubimit}>
+              <Input name="email" type="text" placeholder="E-mail" />
+              <Input name="password" type="password" placeholder="Senha" />
 
-            <button type="submit">Entrar</button>
-          </Form>
+              <button type="submit">Entrar</button>
+            </Form>
 
-          <a href="#">Esqueci minha senha</a>
+            {/* <Link to="/forgotPasword">Esqueci minha senha</Link> */}
 
-          <a href="#">
-            <FiLogIn /> Criar conta
-          </a>
-        </div>
+            <Link to="/signup">
+              <FiLogIn /> Criar conta
+            </Link>
+          </div>
+        </AnimationConteiner>
       </Content>
     </Container>
   );

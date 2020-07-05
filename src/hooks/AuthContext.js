@@ -47,7 +47,7 @@ function AuthProvider({ children }) {
   );
 }
 
-// Metodo que verific a se o provider esta setado no APP
+// Metodo que verifica se o provider esta setado no APP
 function useAuth() {
   const context = useContext(AuthContext);
 

@@ -1,20 +1,20 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
 import { AuthProvider } from "./hooks/AuthContext";
+import Routes from "./routes";
 
 import GlobalStyles from "./styles/GlobalStyles";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <AuthProvider>
-        <SignIn />
+        <Routes />
         <ToastContainer autoClose={3000} />
+        <GlobalStyles />
       </AuthProvider>
-      <GlobalStyles />
-    </>
+    </BrowserRouter>
   );
 }
 
