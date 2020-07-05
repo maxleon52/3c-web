@@ -54,7 +54,7 @@ export const AnimationConteiner = styled.div`
     flex-direction: column;
     align-items: center;
     width: 413px;
-    height: ${(props) => (props.err === "" ? "451px" : "499px")};
+    height: ${(props) => (props.err === "" ? "351px" : "391px")};
     background-color: #546e7a;
     border-radius: 8px;
 

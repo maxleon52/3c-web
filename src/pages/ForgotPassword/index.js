@@ -4,8 +4,6 @@ import { Form } from "@unform/web";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 
-import { useAuth } from "../../hooks/AuthContext";
-
 import Input from "../../components/Input";
 import { FiLogIn } from "react-icons/fi";
 
@@ -14,12 +12,9 @@ import { Container, Background, Content, AnimationConteiner } from "./styles";
 import bgLogin from "../../assets/background-login.png";
 import handCard from "../../assets/hand-card.svg";
 
-function SignIn() {
+function ForgotPassword() {
   const [err, setErr] = useState("");
   const formRef = useRef(null);
-
-  const { user, signIn } = useAuth(); // Contexto de auth
-  console.log(user);
 
   async function handleSubimit(data, { reset }) {
     try {
@@ -27,16 +22,11 @@ function SignIn() {
         email: Yup.string()
           .required("E-mail obrigatório")
           .email("Favor inserir um e-mail válido."),
-        password: Yup.string().required("Senha obrigatória"),
       });
 
       await schema.validate(data, { abortEarly: false });
 
-      // Faz a chamada a rota "/session" através do contextoAPI
-      signIn({
-        email: data.email,
-        password: data.password,
-      });
+      // Fazer recuperação de senha // ContextAPI
 
       formRef.current.setErrors({});
       setErr("");
@@ -68,19 +58,16 @@ function SignIn() {
         <AnimationConteiner err={err}>
           <div>
             <img src={handCard} alt="" />
-            <h1>Controle Cartão de Crédito</h1>
+            <h1>Recuperação de senha</h1>
 
             <Form ref={formRef} onSubmit={handleSubimit}>
               <Input name="email" type="text" placeholder="E-mail" />
-              <Input name="password" type="password" placeholder="Senha" />
 
-              <button type="submit">Entrar</button>
+              <button type="submit">Recuperar</button>
             </Form>
 
-            <Link to="/forgot-password">Esqueci minha senha</Link>
-
-            <Link to="/signup">
-              <FiLogIn /> Criar conta
+            <Link to="/">
+              <FiLogIn /> Fazer login
             </Link>
           </div>
         </AnimationConteiner>
@@ -89,4 +76,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default ForgotPassword;
