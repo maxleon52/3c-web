@@ -51,11 +51,10 @@ function SignIn() {
 
         formRef.current.setErrors(errorMessages);
         setErr(errorMessages);
-        toast.error("Falha na autenticação, verifique seus dados.");
         // console.log(formRef);
-      } else {
-        toast.info("Houve um erro inesperado, contate o suporte.");
+        return;
       }
+      toast.info("Houve um erro inesperado, contate o suporte");
     }
   }
 

@@ -19,19 +19,16 @@ function AuthProvider({ children }) {
   });
 
   // Metado para fazer login
-  const signIn = useCallback(
-    async ({ email, password }) => {
-      const response = await api.post("/session", { email, password });
+  const signIn = useCallback(async ({ email, password }) => {
+    const response = await api.post("/session", { email, password });
 
-      const { token, user } = response.data;
-      localStorage.setItem("@3c:token", token);
-      localStorage.setItem("@3c:user", JSON.stringify(user));
+    const { token, user } = response.data;
+    localStorage.setItem("@3c:token", token);
+    localStorage.setItem("@3c:user", JSON.stringify(user));
 
-      setData({ token, user });
-      toast.success(`Bem-vindo(a) ${data.user.name}`);
-    },
-    [data.user.name]
-  );
+    setData({ token, user });
+    toast.success(`Bem-vindo(a) ${user.name}`);
+  }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem("@3c:token");
