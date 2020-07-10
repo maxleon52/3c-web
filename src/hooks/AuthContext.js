@@ -18,7 +18,7 @@ function AuthProvider({ children }) {
     return {};
   });
 
-  // Metado para fazer login
+  // Metodo para fazer login
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post("/session", { email, password });
 
