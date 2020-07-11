@@ -8,7 +8,7 @@ import btnCardHome from "../../assets/btn-card-home.svg";
 import btnExit from "../../assets/btn-exit.svg";
 
 function Header() {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   return (
     <Container>
       <Content>
@@ -18,7 +18,7 @@ function Header() {
 
         <div>
           <span>3C - Controle Cartão de Crédito</span>
-          <span>Olá, Fulano</span>
+          <span>Olá, {user.name}</span>
         </div>
 
         <button onClick={signOut}>
