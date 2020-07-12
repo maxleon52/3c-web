@@ -21,6 +21,7 @@ function AuthProvider({ children }) {
   // Metodo para fazer login
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post("/session", { email, password });
+    console.log(response);
 
     const { token, user } = response.data;
     localStorage.setItem("@3c:token", token);
