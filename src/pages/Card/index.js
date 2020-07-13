@@ -18,18 +18,17 @@ function Card() {
 
   const { user } = useAuth();
 
-  // LISTAGEM NÃO ESTA FUNCIONANDO, POR CONTA DO HEADERS
+  // LISTAGEM NÃO ESTA FUNCIONANDO, LOOP INFINIT
   useEffect(() => {
     async function loadCards() {
       const response = await api.get("/cards", {
         user_id: user._id,
       });
       setListCard(response.data);
-      console.log(listCards);
     }
 
     loadCards();
-  }, [listCards, user._id]);
+  }, [user._id]);
 
   return (
     <Container>
@@ -47,7 +46,7 @@ function Card() {
           </button>
         </header>
 
-        {/* <ul>
+        <ul>
           {listCards.map((card) => (
             <li key={card._id}>
               <ListCards>
@@ -71,7 +70,7 @@ function Card() {
               </ListCards>
             </li>
           ))}
-        </ul> */}
+        </ul>
       </Content>
     </Container>
   );

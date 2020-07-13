@@ -12,6 +12,7 @@ function AuthProvider({ children }) {
     const user = localStorage.getItem("@3c:user");
 
     if (token && user) {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
       return { token, user: JSON.parse(user) };
     }
 
