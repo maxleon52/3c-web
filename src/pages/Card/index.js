@@ -17,24 +17,19 @@ function Card() {
   const [listCards, setListCard] = useState([]);
 
   const { user } = useAuth();
-  console.log(user);
 
   // LISTAGEM NÃO ESTA FUNCIONANDO, POR CONTA DO HEADERS
   useEffect(() => {
     async function loadCards() {
-      const response = await api.get(
-        "/cards",
-        {
-          user_id: user._id,
-        },
-        { header: user.id }
-      );
+      const response = await api.get("/cards", {
+        user_id: user._id,
+      });
       setListCard(response.data);
       console.log(listCards);
     }
 
     loadCards();
-  }, [listCards, user._id, user.id]);
+  }, [listCards, user._id]);
 
   return (
     <Container>

@@ -26,6 +26,7 @@ function AuthProvider({ children }) {
     const { token, user } = response.data;
     localStorage.setItem("@3c:token", token);
     localStorage.setItem("@3c:user", JSON.stringify(user));
+    api.defaults.headers.Authorization = `Bearer ${token}`;
 
     setData({ token, user });
     toast.success(`Bem-vindo(a) ${user.name}`);
@@ -39,7 +40,9 @@ function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ token: data.token, user: data.user, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
