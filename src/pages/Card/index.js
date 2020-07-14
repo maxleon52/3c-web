@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Form } from "@unform/web";
 import Input from "../../components/Input";
 
@@ -41,9 +42,12 @@ function Card() {
               <img src={searchBtn} alt="Pesquisar" /> Pesquisar
             </button>
           </Form>
-          <button>
-            <img src={plusBtn} alt="Novo" /> Novo
-          </button>
+
+          <Link to="/cards/new">
+            <button>
+              <img src={plusBtn} alt="Novo" /> Novo
+            </button>
+          </Link>
         </header>
 
         <ul>
