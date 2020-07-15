@@ -26,6 +26,7 @@ export const Content = styled.div`
       align-items: flex-start;
       width: 545px;
       height: 300px;
+      /* background: ${(props) => (props.color ? props.color : "#cddc39")}; */
       background: #cddc39;
       padding: 16px 28px;
       border: 3px solid #546e7a;
