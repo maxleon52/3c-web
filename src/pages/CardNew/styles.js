@@ -135,6 +135,95 @@ export const Content = styled.div`
           .block2-2 {
             width: 170px;
           }
+          
+          .block2-1{
+            .css-2b097c-container{
+              padding: 0;
+              margin: 0;
+              height: 30px;
+              border-radius: 0;
+
+              .react-select__control, .css-yk16xz-control{
+                border: 2px solid #fff;
+                border-radius: 0;
+                display: flex;
+                align-items: flex-start;
+                padding: 0;
+                margin: 0;
+                background: #546e7a;
+                min-height: 30px;
+                height: 30px;
+                /* height: 100%; */
+                /* border: 2px solid #fff; */
+                
+                .react-select__indicators, .css-1hb7zxy-IndicatorsConatiner{
+                  /* border: 1px solid yellow; */
+                  /* display: flex;
+                  align-items: flex-start; */
+                  /* padding: 0px 8px; */
+                  margin: 0;
+                  height: 28px;
+                  width: 37px; 
+
+                    .react-select__indicator, .react-select__dropdown-indicator, .css-tlfecz-indicatorContainer{
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      padding: 0;
+                      width: 100%;
+                      height: 28px;
+                      /* border-radius: 4px; */
+
+                      :hover{
+                        cursor: pointer;
+                        background: ${lighten(0.05, "#546e7a")}
+
+                      }
+
+                      svg{
+                        color: #fff;
+                      }
+                    }
+                  
+                }
+
+                .react-select__value-container, .css-g1d714-ValueContainer{
+                  
+                  /* border: 1px solid yellow; */
+                  /* display: flex;
+                  align-items: flex-start; */
+                  padding: 0px 8px;
+                  margin: 0;
+                  height: 28px;
+
+                  .react-select__single-value, .css-luccc91-singleValue{
+                    color: #fff;
+                  }
+                  
+                  
+
+                  .css-b8ldur-Input{
+                    /* display: flex;
+                    align-items: flex-start; */
+                    margin: 0;
+                    padding: 0;
+                    color: #fff;
+
+                    .react-select__input{
+                    /* border: 1px solid red; */
+                    /* display: flex;
+                    align-items: flex-start; */
+                    height: 26px;
+                    }
+                  }
+
+                  .react-select__placeholder{
+                    color: #fff;
+                  }         
+                }
+              }
+            }
+          }
         }
 
         .block3 {
@@ -193,3 +282,5 @@ export const Content = styled.div`
     }
   }
 `;
+
+// export const Select = styled.select``;

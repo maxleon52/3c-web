@@ -13,6 +13,7 @@ import saveBtn from "../../assets/save-btn.svg";
 import cancelBtn from "../../assets/cancel-btn.svg";
 
 import { Container, Content } from "./styles";
+import { backgrounds } from "polished";
 
 function CardNew() {
   const { user } = useAuth();
@@ -21,7 +22,7 @@ function CardNew() {
   const [name, setName] = useState("Nome do cartão");
   const [finalCard, setFinalCard] = useState("0000");
   const [expirationCard, setExpirationCard] = useState("");
-  const [payDay, setPayDay] = useState([]);
+  const [payDay, setPayDay] = useState();
 
   const options = [
     { value: 1, label: " 1" },
@@ -56,8 +57,6 @@ function CardNew() {
     { value: 30, label: "30" },
     { value: 31, label: "31" },
   ];
-
-  console.log(payDay);
 
   async function handleSubmit(data) {
     // e.preventDefault();
@@ -145,14 +144,18 @@ function CardNew() {
                   <Select
                     name="pay_day"
                     placeholder="ex: 25"
-                    onChange={(e) => setPayDay(e.target.value)}
+                    onChange={(e) => setPayDay(e.value)}
                     options={options}
                   />
                 </div>
 
                 <div className="block2-2">
                   <label htmlFor="best_day">melhor dia comprar</label>
-                  <Select name="best_day" placeholder="ex: 15" />
+                  <Select
+                    name="best_day"
+                    placeholder="ex: 15"
+                    options={options}
+                  />
                 </div>
               </div>
 
