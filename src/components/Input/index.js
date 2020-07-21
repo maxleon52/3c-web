@@ -16,7 +16,9 @@ export default function Input({ name, ...rest }) {
   return (
     <>
       {error && (
-        <strong style={{ color: "#e57373", padding: "8px 0 8px 0 " }}>
+        <strong
+          style={{ color: "#e57373", fontSize: "13px", display: "block" }}
+        >
           {error}
         </strong>
       )}

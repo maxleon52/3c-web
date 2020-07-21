@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Form } from "@unform/web";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 
@@ -13,11 +15,13 @@ import saveBtn from "../../assets/save-btn.svg";
 import cancelBtn from "../../assets/cancel-btn.svg";
 
 import { Container, Content } from "./styles";
-import { backgrounds } from "polished";
 
 function CardNew() {
   const { user } = useAuth();
   const history = useHistory();
+
+  const [err, setErr] = useState("");
+  const formRef = useRef(null);
 
   const [name, setName] = useState("Nome do cartão");
   const [finalCard, setFinalCard] = useState("0000");
@@ -58,17 +62,61 @@ function CardNew() {
     { value: 31, label: "31" },
   ];
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
     // e.preventDefault();
+    // console.log(data);
     try {
-      await api.post("/cards", data);
+      const schema = Yup.object().shape({
+        name: Yup.string().required("Preenchimento obrigatório"),
+        final_card: Yup.string()
+          .transform((value) => (isNaN(value) ? undefined : value))
+          .length(4, "Digite os 4 números finais")
+          .required("Preenchimento obrigatório"),
+        expiration_card: Yup.date()
+          .transform((value) => (isNaN(value) ? undefined : value))
+          .required("Preenchimento obrigatório"),
+        pay_day: Yup.number()
+          .transform((value) => (isNaN(value) ? undefined : value))
+          .required("Preenchimento obrigatório"),
+        best_day: Yup.number()
+          .transform((value) => (isNaN(value) ? undefined : value))
+          .required("Preenchimento obrigatório"),
+        flag: Yup.string().required("Preenchimento obrigatório"),
+        color: Yup.string().required("Preenchimento obrigatório"),
+      });
+      await schema.validate(data, { abortEarly: false });
 
+      await api.post("/cards", data);
+      console.log(data);
+      formRef.current.setErrors({});
+      setErr("");
+      reset();
+      toast.success("Cartão cadastrado com sucesso!");
       history.push("/cards");
-    } catch (error) {
-      console.log(error.response);
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach((error) => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+        setErr(errorMessages);
+        // console.log(formRef);
+        return;
+      }
+      toast.error(err.response.data.message);
     }
   }
 
+  function handleDashboard() {
+    try {
+      history.push("/");
+    } catch (error) {
+      toast.error("Ocorreu um erro inesperado, contate o suporte.");
+    }
+  }
   return (
     <Container>
       <Content>
@@ -76,7 +124,7 @@ function CardNew() {
 
         <main>
           <div className="card">
-            <strong name="name">{name}</strong>
+            <strong name="name">{name.toUpperCase()}</strong>
 
             <img name="chipCard" src={chipCard} alt="chip-icone" />
 
@@ -106,7 +154,7 @@ function CardNew() {
           </div>
 
           <div className="card-form">
-            <Form onSubmit={handleSubmit}>
+            <Form ref={formRef} onSubmit={handleSubmit}>
               <div className="block0">
                 <label htmlFor="name">Nome do cartão</label>
                 <Input
@@ -179,7 +227,7 @@ function CardNew() {
                 <button type="submit">
                   <img src={saveBtn} alt="Salvar" /> Salvar
                 </button>
-                <button type="cancel">
+                <button type="cancel" onClick={handleDashboard}>
                   <img src={cancelBtn} alt="Cancelar" /> Cancelar
                 </button>
               </div>

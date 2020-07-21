@@ -118,6 +118,7 @@ export const Content = styled.div`
 
         .block1 {
           display: flex;
+          justify-content: space-between;
 
           input,
           .block2-1,
@@ -136,7 +137,7 @@ export const Content = styled.div`
             width: 170px;
           }
           
-          .block2-1{
+          .block2-1, .block2-2{
             .css-2b097c-container{
               padding: 0;
               margin: 0;
@@ -155,6 +156,12 @@ export const Content = styled.div`
                 height: 30px;
                 /* height: 100%; */
                 /* border: 2px solid #fff; */
+
+                :hover{
+                  cursor: pointer;
+                  background: ${lighten(0.05, "#546e7a")}
+
+                }
                 
                 .react-select__indicators, .css-1hb7zxy-IndicatorsConatiner{
                   /* border: 1px solid yellow; */
@@ -171,14 +178,10 @@ export const Content = styled.div`
                       justify-content: center;
                       padding: 0;
                       width: 100%;
-                      height: 28px;
+                      height: 26px;
                       /* border-radius: 4px; */
 
-                      :hover{
-                        cursor: pointer;
-                        background: ${lighten(0.05, "#546e7a")}
-
-                      }
+                      
 
                       svg{
                         color: #fff;

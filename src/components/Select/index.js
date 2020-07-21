@@ -26,12 +26,21 @@ function Select({ name, ...rest }) {
   }, [fieldName, registerField, rest.isMulti]);
 
   return (
-    <ReactSelect
-      defaultValue={defaultValue}
-      ref={selectRef}
-      classNamePrefix="react-select"
-      {...rest}
-    />
+    <>
+      {error && (
+        <strong
+          style={{ color: "#e57373", fontSize: "13px", display: "block" }}
+        >
+          {error}
+        </strong>
+      )}
+      <ReactSelect
+        defaultValue={defaultValue}
+        ref={selectRef}
+        classNamePrefix="react-select"
+        {...rest}
+      />
+    </>
   );
 }
 
