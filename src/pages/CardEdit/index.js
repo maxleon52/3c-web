@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { Form } from "@unform/web";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import { parseISO, format, getDate } from "date-fns";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 
@@ -19,6 +20,7 @@ import { Container, Content } from "./styles";
 function CardNew() {
   const { user } = useAuth();
   const history = useHistory();
+  const { _id } = useParams();
 
   const [err, setErr] = useState("");
   const formRef = useRef(null);
@@ -26,6 +28,7 @@ function CardNew() {
   const [name, setName] = useState("Nome do cartão");
   const [finalCard, setFinalCard] = useState("0000");
   const [expirationCard, setExpirationCard] = useState("");
+  const [calenderExpirationCard, setCalenderExpirationCard] = useState("");
   const [payDay, setPayDay] = useState();
 
   const options = [
@@ -61,6 +64,43 @@ function CardNew() {
     { value: 30, label: "30" },
     { value: 31, label: "31" },
   ];
+
+  // IMPLEMENTAR função de listar os dados
+
+  useEffect(() => {
+    async function loadData() {
+      const response = await api.get(`/cards/${_id}`);
+      const {
+        name,
+        final_card,
+        expiration_card,
+        pay_day,
+        best_day,
+        flag,
+      } = response.data[0];
+
+      let parsedExpirationCard = parseISO(expiration_card);
+      // console.log(parsedExpirationCard);
+      let formatedExpirationCard = format(parsedExpirationCard, "yyyy-MM-dd");
+      // console.log(formatedExpirationCard);
+
+      setName(name);
+      setFinalCard(final_card);
+      setCalenderExpirationCard(formatedExpirationCard);
+      setPayDay(pay_day);
+      // console.log(typeof payDay);
+    }
+    loadData();
+  }, [_id]);
+
+  // Monitora para fazer a formatação no cartão
+  useEffect(() => {
+    setExpirationCard(calenderExpirationCard.split("-"));
+  }, [calenderExpirationCard]);
+
+  let initialData = {
+    pay_day: payDay,
+  };
 
   async function handleSubmit(data, { reset }) {
     // e.preventDefault();
@@ -122,7 +162,7 @@ function CardNew() {
   return (
     <Container>
       <Content>
-        <h1>Novo cartão</h1>
+        <h1>Edição de cartão</h1>
 
         <main>
           <div className="card">
@@ -162,6 +202,7 @@ function CardNew() {
                 <Input
                   name="name"
                   onChange={(e) => setName(e.target.value)}
+                  value={name}
                   placeholder="ex: Fulano de tal"
                 ></Input>
               </div>
@@ -172,6 +213,7 @@ function CardNew() {
                   <Input
                     name="final_card"
                     onChange={(e) => setFinalCard(e.target.value)}
+                    value={finalCard}
                     placeholder="ex: 3232"
                     maxLength="4"
                   ></Input>
@@ -181,9 +223,8 @@ function CardNew() {
                   <Input
                     name="expiration_card"
                     type="date"
-                    onChange={(e) =>
-                      setExpirationCard(e.target.value.split("-"))
-                    }
+                    onChange={(e) => setCalenderExpirationCard(e.target.value)}
+                    value={calenderExpirationCard}
                     placeholder="ex: 05/2099"
                   ></Input>
                 </div>
@@ -197,6 +238,10 @@ function CardNew() {
                     placeholder="ex: 25"
                     onChange={(e) => setPayDay(e.value)}
                     options={options}
+                    defaultValue={{
+                      label: ("  " + payDay).substr(-2),
+                      value: payDay,
+                    }}
                   />
                 </div>
 

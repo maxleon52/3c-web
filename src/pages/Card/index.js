@@ -19,7 +19,7 @@ function Card() {
 
   const { user } = useAuth();
 
-  // LISTAGEM NÃO ESTA FUNCIONANDO, LOOP INFINIT
+  // LISTAGEM DOS CARTÕES
   useEffect(() => {
     async function loadCards() {
       const response = await api.get("/cards", {
@@ -64,12 +64,16 @@ function Card() {
                 </div>
 
                 <div className="list-card-content2">
-                  <button>
-                    <img src={editCardBtn} alt="Editar" /> Editar
-                  </button>
-                  <button>
-                    <img src={deleteCardBtn} alt="Deletar" /> Deletar
-                  </button>
+                  <Link to={`/cards/edit/${card._id}`}>
+                    <button>
+                      <img src={editCardBtn} alt="Editar" /> Editar
+                    </button>
+                  </Link>
+                  <Link>
+                    <button>
+                      <img src={deleteCardBtn} alt="Deletar" /> Deletar
+                    </button>
+                  </Link>
                 </div>
               </ListCards>
             </li>
