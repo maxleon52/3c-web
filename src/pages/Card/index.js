@@ -69,7 +69,7 @@ function Card() {
                       <img src={editCardBtn} alt="Editar" /> Editar
                     </button>
                   </Link>
-                  <Link>
+                  <Link to="">
                     <button>
                       <img src={deleteCardBtn} alt="Deletar" /> Deletar
                     </button>

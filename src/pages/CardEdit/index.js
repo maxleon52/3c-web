@@ -31,8 +31,8 @@ function CardNew() {
   const [calenderExpirationCard, setCalenderExpirationCard] = useState("");
   const [payDay, setPayDay] = useState();
   const [bestDay, setBestDay] = useState();
-  const [flag, setFlag] = useState();
-  const [color, setColor] = useState();
+  const [flag, setFlag] = useState("");
+  const [color, setColor] = useState("");
 
   const options = [
     { value: 1, label: " 1" },
@@ -107,7 +107,7 @@ function CardNew() {
 
   async function handleSubmit(data, { reset }) {
     // e.preventDefault();
-    // console.log(data);
+    console.log(data);
     try {
       const schema = Yup.object().shape({
         name: Yup.string().required("Preenchimento obrigatório"),
@@ -119,22 +119,31 @@ function CardNew() {
           .transform((value) => (isNaN(value) ? undefined : value))
           .required("Preenchimento obrigatório"),
         pay_day: Yup.number()
-          .transform((value) => (isNaN(value) ? undefined : value))
+          .transform((value) => (Number.isNaN(value) ? undefined : value))
           .required("Preenchimento obrigatório"),
         best_day: Yup.number()
-          .transform((value) => (isNaN(value) ? undefined : value))
+          .transform((value) => (Number.isNaN(value) ? undefined : value))
           .required("Preenchimento obrigatório"),
         flag: Yup.string().required("Preenchimento obrigatório"),
         color: Yup.string().required("Preenchimento obrigatório"),
       });
+      data = {
+        name,
+        final_card: finalCard,
+        expiration_card: calenderExpirationCard,
+        pay_day: payDay,
+        best_day: bestDay,
+        flag,
+        color,
+      };
       await schema.validate(data, { abortEarly: false });
 
-      await api.post("/cards", data);
+      await api.put(`/cards/${_id}`, data);
       console.log(data);
       formRef.current.setErrors({});
       setErr("");
       reset();
-      toast.success("Cartão cadastrado com sucesso!");
+      toast.success("Cartão atualizado com sucesso!");
       history.push("/cards");
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
