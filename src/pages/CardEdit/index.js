@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Form } from "@unform/web";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { parseISO, format, getDate } from "date-fns";
+import { parseISO, format } from "date-fns";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 
@@ -11,7 +11,7 @@ import api from "../../services/api";
 import { useAuth } from "../../hooks/AuthContext";
 
 import chipCard from "../../assets/chip-icon.svg";
-import flag from "../../assets/flag-mastercard-icon.svg";
+import imgFlag from "../../assets/flag-mastercard-icon.svg";
 import saveBtn from "../../assets/save-btn.svg";
 import cancelBtn from "../../assets/cancel-btn.svg";
 
@@ -30,6 +30,9 @@ function CardNew() {
   const [expirationCard, setExpirationCard] = useState("");
   const [calenderExpirationCard, setCalenderExpirationCard] = useState("");
   const [payDay, setPayDay] = useState();
+  const [bestDay, setBestDay] = useState();
+  const [flag, setFlag] = useState();
+  const [color, setColor] = useState();
 
   const options = [
     { value: 1, label: " 1" },
@@ -77,6 +80,7 @@ function CardNew() {
         pay_day,
         best_day,
         flag,
+        color,
       } = response.data[0];
 
       let parsedExpirationCard = parseISO(expiration_card);
@@ -88,6 +92,9 @@ function CardNew() {
       setFinalCard(final_card);
       setCalenderExpirationCard(formatedExpirationCard);
       setPayDay(pay_day);
+      setBestDay(best_day);
+      setFlag(flag);
+      setColor(color);
       // console.log(typeof payDay);
     }
     loadData();
@@ -97,10 +104,6 @@ function CardNew() {
   useEffect(() => {
     setExpirationCard(calenderExpirationCard.split("-"));
   }, [calenderExpirationCard]);
-
-  let initialData = {
-    pay_day: payDay,
-  };
 
   async function handleSubmit(data, { reset }) {
     // e.preventDefault();
@@ -190,7 +193,7 @@ function CardNew() {
                 <strong>{payDay}</strong>
               </div>
 
-              <img src={flag} alt="bandeira" />
+              <img src={imgFlag} alt="bandeira" />
             </div>
             <strong>{user.name.toUpperCase()}</strong>
           </div>
@@ -238,7 +241,7 @@ function CardNew() {
                     placeholder="ex: 25"
                     onChange={(e) => setPayDay(e.value)}
                     options={options}
-                    defaultValue={{
+                    value={{
                       label: ("  " + payDay).substr(-2),
                       value: payDay,
                     }}
@@ -250,7 +253,12 @@ function CardNew() {
                   <Select
                     name="best_day"
                     placeholder="ex: 15"
+                    onChange={(e) => setBestDay(e.value)}
                     options={options}
+                    value={{
+                      label: ("  " + bestDay).substr(-2),
+                      value: bestDay,
+                    }}
                   />
                 </div>
               </div>
@@ -258,15 +266,21 @@ function CardNew() {
               <div className="block3">
                 <div className="block3-1">
                   <label htmlFor="flag">Bandeira</label>
-                  <Input name="flag" placeholder="ex: Mastercard"></Input>
+                  <Input
+                    name="flag"
+                    placeholder="ex: Mastercard"
+                    onChange={(e) => setFlag(e.target.value)}
+                    value={flag}
+                  ></Input>
                 </div>
                 <div className="block3-2">
                   <label htmlFor="color">cor</label>
                   <Input
                     name="color"
                     // type="tel"
-                    // onChange={(e) => setColor(e.target.value)}
+                    onChange={(e) => setColor(e.target.value)}
                     placeholder="ex: verde"
+                    value={color}
                   ></Input>
                 </div>
               </div>
