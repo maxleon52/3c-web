@@ -63,8 +63,6 @@ function CardNew() {
   ];
 
   async function handleSubmit(data, { reset }) {
-    // e.preventDefault();
-    // console.log(data);
     try {
       const schema = Yup.object().shape({
         name: Yup.string().required("Preenchimento obrigatório"),
@@ -87,7 +85,7 @@ function CardNew() {
       await schema.validate(data, { abortEarly: false });
 
       await api.post("/cards", data);
-      console.log(data);
+
       formRef.current.setErrors({});
       setErr("");
       reset();
@@ -103,7 +101,7 @@ function CardNew() {
 
         formRef.current.setErrors(errorMessages);
         setErr(errorMessages);
-        // console.log(formRef);
+
         return;
       }
       toast.error(err.response.data.message);

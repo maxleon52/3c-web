@@ -84,9 +84,8 @@ function CardNew() {
       } = response.data[0];
 
       let parsedExpirationCard = parseISO(expiration_card);
-      // console.log(parsedExpirationCard);
+
       let formatedExpirationCard = format(parsedExpirationCard, "yyyy-MM-dd");
-      // console.log(formatedExpirationCard);
 
       setName(name);
       setFinalCard(final_card);
@@ -95,7 +94,6 @@ function CardNew() {
       setBestDay(best_day);
       setFlag(flag);
       setColor(color);
-      // console.log(typeof payDay);
     }
     loadData();
   }, [_id]);
@@ -106,7 +104,6 @@ function CardNew() {
   }, [calenderExpirationCard]);
 
   async function handleSubmit(data, { reset }) {
-    // e.preventDefault();
     console.log(data);
     try {
       const schema = Yup.object().shape({
@@ -139,7 +136,7 @@ function CardNew() {
       await schema.validate(data, { abortEarly: false });
 
       await api.put(`/cards/${_id}`, data);
-      console.log(data);
+
       formRef.current.setErrors({});
       setErr("");
       reset();
@@ -286,7 +283,6 @@ function CardNew() {
                   <label htmlFor="color">cor</label>
                   <Input
                     name="color"
-                    // type="tel"
                     onChange={(e) => setColor(e.target.value)}
                     placeholder="ex: verde"
                     value={color}

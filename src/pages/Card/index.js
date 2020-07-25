@@ -17,7 +17,6 @@ import { Container, Content, ListCards } from "./styles";
 
 function Card() {
   const [listCards, setListCard] = useState([]);
-  // const [search, setSearch] = useState("");
 
   const { user } = useAuth();
 
@@ -48,10 +47,8 @@ function Card() {
       const response = await api.get("/cards-search", {
         params: { final_card: search },
       });
-      console.log(response.data);
-      setListCard(response.data);
-      console.log("deu certo");
-      console.log(listCards);
+
+      setListCard([response.data]);
     } catch (err) {
       console.log(err);
     }
@@ -63,13 +60,7 @@ function Card() {
         <h1>Meus Cartões</h1>
         <header>
           <Form onSubmit={handleSearch}>
-            <Input
-              name="search"
-              type="text"
-              placeholder="Dados do cartão"
-              // value={search}
-              // onChange={(e) => setSearch(e.target.value)}
-            />
+            <Input name="search" type="text" placeholder="Dados do cartão" />
             <button type="submit">
               <img src={searchBtn} alt="Pesquisar" /> Pesquisar
             </button>
