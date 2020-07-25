@@ -17,7 +17,7 @@ import { Container, Content, ListCards } from "./styles";
 
 function Card() {
   const [listCards, setListCard] = useState([]);
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
 
   const { user } = useAuth();
 
@@ -31,7 +31,7 @@ function Card() {
     }
 
     loadCards();
-  }, [user._id, listCards]);
+  }, [user._id]);
 
   async function handleDeleteCard(_id) {
     try {
@@ -42,7 +42,8 @@ function Card() {
     }
   }
 
-  async function handleSearch() {
+  async function handleSearch(data) {
+    const { search } = data;
     try {
       const response = await api.get("/cards-search", {
         params: { final_card: search },
@@ -66,8 +67,8 @@ function Card() {
               name="search"
               type="text"
               placeholder="Dados do cartão"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              // value={search}
+              // onChange={(e) => setSearch(e.target.value)}
             />
             <button type="submit">
               <img src={searchBtn} alt="Pesquisar" /> Pesquisar
