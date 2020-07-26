@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form } from "@unform/web";
 import Input from "../../components/Input";
 import { toast } from "react-toastify";
+import { FiArrowLeft } from "react-icons/fi";
 
 import api from "../../services/api";
 import { useAuth } from "../../hooks/AuthContext";
@@ -19,6 +21,7 @@ function Card() {
   const [listCards, setListCard] = useState([]);
 
   const { user } = useAuth();
+  const history = useHistory();
 
   // LISTAGEM DOS CARTÕES
   useEffect(() => {
@@ -30,7 +33,7 @@ function Card() {
     }
 
     loadCards();
-  }, [user._id]);
+  }, [user._id, listCards]);
 
   async function handleDeleteCard(_id) {
     try {
@@ -54,10 +57,24 @@ function Card() {
     }
   }
 
+  // Voltar tela anterior
+  function handleListCard() {
+    try {
+      history.push("/");
+    } catch (error) {
+      toast.error("Ocorreu um erro inesperado, contate o suporte.");
+    }
+  }
+
   return (
     <Container>
       <Content>
-        <h1>Meus Cartões</h1>
+        <div className="pre-header">
+          <button onClick={handleListCard}>
+            <FiArrowLeft size={30} />
+          </button>
+          <h1>Meus Cartões</h1>
+        </div>
         <header>
           <Form onSubmit={handleSearch}>
             <Input name="search" type="text" placeholder="Dados do cartão" />

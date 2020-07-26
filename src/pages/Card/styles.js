@@ -13,6 +13,29 @@ export const Content = styled.div`
   width: 950px;
   max-width: 950px;
 
+  .pre-header {
+    display: flex;
+    align-items: center;
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      width: 35px;
+      border-radius: 4px;
+
+      :hover {
+        cursor: pointer;
+        background-color: ${darken(0.1, "#fff")};
+      }
+    }
+
+    h1 {
+      margin-left: 10px;
+    }
+  }
+
   header {
     display: flex;
     justify-content: space-between;
@@ -82,9 +105,9 @@ export const ListCards = styled.div`
 
   .list-card-content1 {
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    width: 35%;
+    width: 50%;
+    margin-left: 40px;
 
     img {
       height: 90px;
@@ -93,8 +116,10 @@ export const ListCards = styled.div`
     .card-data {
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-between;
       height: 90px;
+      width: 100%;
+      margin-left: 50px;
     }
   }
 
