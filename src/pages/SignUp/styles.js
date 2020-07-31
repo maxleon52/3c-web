@@ -19,7 +19,7 @@ export const Background = styled.div`
   img {
     /* border: 2px solid yellow; */
     width: 100%;
-    height: 500px;
+    height: 400px;
   }
 `;
 

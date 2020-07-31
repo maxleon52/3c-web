@@ -18,8 +18,7 @@ function SignIn() {
   const [err, setErr] = useState("");
   const formRef = useRef(null);
 
-  const { user, signIn } = useAuth(); // Contexto de auth
-  console.log(user);
+  const { signIn } = useAuth(); // Contexto de auth
 
   async function handleSubimit(data, { reset }) {
     try {

@@ -19,6 +19,7 @@ import { Container, Content, ListCards } from "./styles";
 
 function Card() {
   const [listCards, setListCard] = useState([]);
+  const [onDelete, setOnDelete] = useState(false);
 
   const { user } = useAuth();
   const history = useHistory();
@@ -30,14 +31,16 @@ function Card() {
         user_id: user._id,
       });
       setListCard(response.data);
+      setOnDelete(false);
     }
 
     loadCards();
-  }, [user._id, listCards]);
+  }, [user._id, onDelete]);
 
   async function handleDeleteCard(_id) {
     try {
       await api.delete(`/cards/${_id}`);
+      setOnDelete(true);
       toast.success("Cartão deletado com sucesso!");
     } catch (err) {
       console.log(err);
@@ -50,7 +53,7 @@ function Card() {
       const response = await api.get("/cards-search", {
         params: { final_card: search },
       });
-
+      console.log(response.data);
       setListCard([response.data]);
     } catch (err) {
       console.log(err);
