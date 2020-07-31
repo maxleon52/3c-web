@@ -20,6 +20,7 @@ import { Container, Content, ListCards } from "./styles";
 function Card() {
   const [listCards, setListCard] = useState([]);
   const [onDelete, setOnDelete] = useState(false);
+  const [onLoad, setOnLoad] = useState(false);
 
   const { user } = useAuth();
   const history = useHistory();
@@ -27,11 +28,13 @@ function Card() {
   // LISTAGEM DOS CARTÕES
   useEffect(() => {
     async function loadCards() {
+      setOnLoad(true);
       const response = await api.get("/cards", {
         user_id: user._id,
       });
       setListCard(response.data);
       setOnDelete(false);
+      setOnLoad(false);
     }
 
     loadCards();
@@ -49,11 +52,20 @@ function Card() {
 
   async function handleSearch(data) {
     const { search } = data;
+
     try {
+      setOnLoad(true);
       const response = await api.get("/cards-search", {
         params: { final_card: search },
       });
-      console.log(response.data);
+      setOnLoad(false);
+
+      if (response.data <= 0 || response.data.message) {
+        toast.info(response.data.message);
+        setListCard(0);
+        return;
+      }
+
       setListCard([response.data]);
     } catch (err) {
       console.log(err);
@@ -61,7 +73,7 @@ function Card() {
   }
 
   // Voltar tela anterior
-  function handleListCard() {
+  function handleDashboard() {
     try {
       history.push("/");
     } catch (error) {
@@ -73,14 +85,18 @@ function Card() {
     <Container>
       <Content>
         <div className="pre-header">
-          <button onClick={handleListCard}>
+          <button onClick={handleDashboard}>
             <FiArrowLeft size={30} />
           </button>
           <h1>Meus Cartões</h1>
         </div>
         <header>
           <Form onSubmit={handleSearch}>
-            <Input name="search" type="text" placeholder="Dados do cartão" />
+            <Input
+              name="search"
+              type="text"
+              placeholder="Números do final do cartão"
+            />
             <button type="submit">
               <img src={searchBtn} alt="Pesquisar" /> Pesquisar
             </button>
@@ -93,36 +109,42 @@ function Card() {
           </Link>
         </header>
 
-        {listCards.length > 0 ? (
-          <ul>
-            {listCards.map((card) => (
-              <li key={card._id}>
-                <ListCards>
-                  <div className="list-card-content1">
-                    <img src={cardIconListCard} alt="cartão-icone" />
-                    <div className="card-data">
-                      <span>{card.name}</span>
-                      <span>Final - {card.final_card}</span>
-                      <span>{card.flag}</span>
-                    </div>
-                  </div>
-
-                  <div className="list-card-content2">
-                    <Link to={`/cards/edit/${card._id}`}>
-                      <button>
-                        <img src={editCardBtn} alt="Editar" /> Editar
-                      </button>
-                    </Link>
-                    <button onClick={() => handleDeleteCard(card._id)}>
-                      <img src={deleteCardBtn} alt="Deletar" /> Deletar
-                    </button>
-                  </div>
-                </ListCards>
-              </li>
-            ))}
-          </ul>
+        {onLoad === true ? (
+          <h1>Carregando...</h1>
         ) : (
-          <h1>Nenhum cartão cadastrado</h1>
+          <>
+            {listCards.length > 0 ? (
+              <ul>
+                {listCards.map((card) => (
+                  <li key={card._id}>
+                    <ListCards>
+                      <div className="list-card-content1">
+                        <img src={cardIconListCard} alt="cartão-icone" />
+                        <div className="card-data">
+                          <span>{card.name}</span>
+                          <span>Final - {card.final_card}</span>
+                          <span>{card.flag}</span>
+                        </div>
+                      </div>
+
+                      <div className="list-card-content2">
+                        <Link to={`/cards/edit/${card._id}`}>
+                          <button>
+                            <img src={editCardBtn} alt="Editar" /> Editar
+                          </button>
+                        </Link>
+                        <button onClick={() => handleDeleteCard(card._id)}>
+                          <img src={deleteCardBtn} alt="Deletar" /> Deletar
+                        </button>
+                      </div>
+                    </ListCards>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <h1>Nenhum cartão cadastrado</h1>
+            )}
+          </>
         )}
       </Content>
     </Container>
