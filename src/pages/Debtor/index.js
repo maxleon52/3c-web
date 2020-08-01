@@ -5,7 +5,7 @@ import { Form } from "@unform/web";
 import Input from "../../components/Input";
 import { toast } from "react-toastify";
 import { FiArrowLeft } from "react-icons/fi";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaUserEdit } from "react-icons/fa";
 
 import api from "../../services/api";
 import { useAuth } from "../../hooks/AuthContext";
@@ -24,7 +24,7 @@ function Debtor() {
   const { user } = useAuth();
   const history = useHistory();
 
-  // LISTAGEM DOS CARTÕES
+  // LISTAGEM DOS DEVEDORES
   useEffect(() => {
     async function loadDebtors() {
       setOnLoad(true);
@@ -39,7 +39,7 @@ function Debtor() {
     loadDebtors();
   }, [user._id, onDelete]);
 
-  async function handleDeleteCard(_id) {
+  async function handleDeleteDebtor(_id) {
     try {
       await api.delete(`/debtors/${_id}`);
       setOnDelete(true);
@@ -114,7 +114,16 @@ function Debtor() {
                   <li key={debtor._id}>
                     <ListDebtors>
                       <div className="list-debtor-content1">
-                        <FaTrash size={25} />
+                        <div className="debtor-icons">
+                          <Link to={`/debtor/edit/${debtor._id}`}>
+                            <FaUserEdit size={25} />
+                          </Link>
+                          <button
+                            onClick={() => handleDeleteDebtor(debtor._id)}
+                          >
+                            <FaTrash size={25} />
+                          </button>
+                        </div>
                         <img src={debtorIconListDebtor} alt="devedor-icone" />
                         <div className="debtor-data">
                           <span>{debtor.name}</span>

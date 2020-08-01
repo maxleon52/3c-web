@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { Form } from "@unform/web";
 import { toast } from "react-toastify";
@@ -16,25 +16,39 @@ import { Container, Content, ListDebtors } from "./styles";
 
 function DebtorNew() {
   const history = useHistory();
+  const { _id } = useParams();
 
   const [err, setErr] = useState("");
   const formRef = useRef(null);
 
   const [name, setName] = useState("Devedor");
 
+  useEffect(() => {
+    async function loadData() {
+      const response = await api.put(`/debtors/${_id}`);
+      const { name } = response.data;
+
+      setName(name);
+    }
+    loadData();
+  }, [_id]);
+
   async function handleSubmit(data, { reset }) {
     try {
       const schema = Yup.object().shape({
         name: Yup.string().required("Preenchimento obrigatório"),
       });
+      data = {
+        name,
+      };
       await schema.validate(data, { abortEarly: false });
 
-      await api.post("/debtors", data);
+      await api.put(`/debtors/${_id}`, data);
 
       formRef.current.setErrors({});
       setErr("");
       reset();
-      toast.success("Devedor cadastrado com sucesso!");
+      toast.success("Devedor atualizado com sucesso!");
       history.push("/debtors");
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -46,7 +60,6 @@ function DebtorNew() {
 
         formRef.current.setErrors(errorMessages);
         setErr(errorMessages);
-
         return;
       }
       toast.error(err.response.data.message);
@@ -88,6 +101,7 @@ function DebtorNew() {
                 <label htmlFor="name">Nome</label>
                 <Input
                   name="name"
+                  value={name}
                   maxlength="22"
                   onChange={(e) => setName(e.target.value)}
                   placeholder="ex: Fulano de tal"

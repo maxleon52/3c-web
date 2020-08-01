@@ -104,11 +104,11 @@ export const Content = styled.div`
 
 export const ListDebtors = styled.div`
   margin-top: 50px;
-  padding: 10px 0;
-  /* background: #cddc39; */
   border-radius: 4px;
   width: 180px;
-  height: 180px;
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 
   :hover {
     border: 2px solid #65727f;
@@ -116,23 +116,44 @@ export const ListDebtors = styled.div`
   }
 
   .list-debtor-content1 {
-    /* border: 2px solid red; */
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     position: relative;
     height: 100%;
 
-    svg {
-      position: relative;
-      align-self: flex-end;
-      margin-right: 10px;
-      border-radius: 4px;
+    .debtor-icons{
+      display: flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 10px 10px;
 
-      :hover {
-        cursor: pointer;
-        color: red;
-        /* background-color: ${darken(0.1, "#fff")}; */
+      a{
+        text-decoration: none;
+        color:#65727f;
+
+        :hover {
+          cursor: pointer;
+          color: #cddc39;
+          /* background-color: ${darken(0.1, "#fff")}; */
+        }
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        /* align-self: flex-end; */
+        /* margin-right: 10px; */
+        border-radius: 4px;
+        color:#65727f;
+
+        :hover {
+          cursor: pointer;
+          color: red;
+          /* background-color: ${darken(0.1, "#fff")}; */
+        }
       }
     }
 
