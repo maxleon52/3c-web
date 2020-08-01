@@ -10,6 +10,7 @@ import Card from "../pages/Card";
 import CardNew from "../pages/CardNew";
 import CardEdit from "../pages/CardEdit";
 import Debtor from "../pages/Debtor";
+import DebtorNew from "../pages/DebtorNew";
 import Abstract from "../pages/Abstract";
 import Shopping from "../pages/Shopping";
 
@@ -25,6 +26,7 @@ export default function Routes() {
       <Route path="/cards/new" exact component={CardNew} isPrivate />
       <Route path="/cards/edit/:_id" exact component={CardEdit} isPrivate />
       <Route path="/debtors" component={Debtor} isPrivate />
+      <Route path="/debtor/new" exact component={DebtorNew} isPrivate />
       <Route path="/abstract" component={Abstract} isPrivate />
       <Route path="/shopping" component={Shopping} isPrivate />
     </Switch>

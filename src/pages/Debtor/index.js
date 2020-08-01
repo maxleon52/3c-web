@@ -5,43 +5,45 @@ import { Form } from "@unform/web";
 import Input from "../../components/Input";
 import { toast } from "react-toastify";
 import { FiArrowLeft } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
 
 import api from "../../services/api";
 import { useAuth } from "../../hooks/AuthContext";
 
 import searchBtn from "../../assets/search-btn.svg";
 import plusBtn from "../../assets/plus-btn.svg";
-import cardIconListCard from "../../assets/card-icon-list-card.svg";
-import editCardBtn from "../../assets/edit-card-btn.svg";
-import deleteCardBtn from "../../assets/delete-card-btn.svg";
+import debtorIconListDebtor from "../../assets/debtor-icon-list-debtor.svg";
 
-import { Container, Content, ListCards } from "./styles";
+import { Container, Content, ListDebtors } from "./styles";
 
-function Card() {
-  const [listCards, setListCard] = useState([]);
+function Debtor() {
+  const [listDebtors, setListDebtors] = useState([]);
   const [onDelete, setOnDelete] = useState(false);
+  const [onLoad, setOnLoad] = useState(false);
 
   const { user } = useAuth();
   const history = useHistory();
 
   // LISTAGEM DOS CARTÕES
   useEffect(() => {
-    async function loadCards() {
-      const response = await api.get("/cards", {
+    async function loadDebtors() {
+      setOnLoad(true);
+      const response = await api.get("/debtors", {
         user_id: user._id,
       });
-      setListCard(response.data);
+      setListDebtors(response.data);
       setOnDelete(false);
+      setOnLoad(false);
     }
 
-    loadCards();
+    loadDebtors();
   }, [user._id, onDelete]);
 
   async function handleDeleteCard(_id) {
     try {
-      await api.delete(`/cards/${_id}`);
+      await api.delete(`/debtors/${_id}`);
       setOnDelete(true);
-      toast.success("Cartão deletado com sucesso!");
+      toast.success("Devedor deletado com sucesso!");
     } catch (err) {
       console.log(err);
     }
@@ -49,12 +51,21 @@ function Card() {
 
   async function handleSearch(data) {
     const { search } = data;
+
     try {
-      const response = await api.get("/cards-search", {
+      setOnLoad(true);
+      const response = await api.get("/debtors-search", {
         params: { final_card: search },
       });
-      console.log(response.data);
-      setListCard([response.data]);
+      setOnLoad(false);
+
+      if (response.data <= 0 || response.data.message) {
+        toast.info(response.data.message);
+        setListDebtors(0);
+        return;
+      }
+
+      setListDebtors([response.data]);
     } catch (err) {
       console.log(err);
     }
@@ -86,47 +97,41 @@ function Card() {
             </button>
           </Form>
 
-          <Link to="/debtors/new">
+          <Link to="/debtor/new">
             <button>
               <img src={plusBtn} alt="Novo" /> Novo
             </button>
           </Link>
         </header>
 
-        {listCards.length > 0 ? (
-          <ul>
-            {listCards.map((card) => (
-              <li key={card._id}>
-                <ListCards>
-                  <div className="list-card-content1">
-                    <img src={cardIconListCard} alt="cartão-icone" />
-                    <div className="card-data">
-                      <span>{card.name}</span>
-                      <span>Final - {card.final_card}</span>
-                      <span>{card.flag}</span>
-                    </div>
-                  </div>
-
-                  <div className="list-card-content2">
-                    <Link to={`/cards/edit/${card._id}`}>
-                      <button>
-                        <img src={editCardBtn} alt="Editar" /> Editar
-                      </button>
-                    </Link>
-                    <button onClick={() => handleDeleteCard(card._id)}>
-                      <img src={deleteCardBtn} alt="Deletar" /> Deletar
-                    </button>
-                  </div>
-                </ListCards>
-              </li>
-            ))}
-          </ul>
+        {onLoad === true ? (
+          <h1>Carregando...</h1>
         ) : (
-          <h1>Nenhum cartão cadastrado</h1>
+          <>
+            {listDebtors.length > 0 ? (
+              <ul>
+                {listDebtors.map((debtor) => (
+                  <li key={debtor._id}>
+                    <ListDebtors>
+                      <div className="list-debtor-content1">
+                        <FaTrash size={25} />
+                        <img src={debtorIconListDebtor} alt="devedor-icone" />
+                        <div className="debtor-data">
+                          <span>{debtor.name}</span>
+                        </div>
+                      </div>
+                    </ListDebtors>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <h1>Nenhum devedor encontrado</h1>
+            )}
+          </>
         )}
       </Content>
     </Container>
   );
 }
 
-export default Card;
+export default Debtor;

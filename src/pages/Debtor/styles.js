@@ -92,61 +92,61 @@ export const Content = styled.div`
       }
     }
   }
-`;
 
-export const ListCards = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 50px;
-  padding: 10px 0;
-  background: #cddc39;
-  border: 2px solid #65727f;
-  border-radius: 4px;
-
-  .list-card-content1 {
+  ul {
     display: flex;
-    align-items: center;
-    width: 50%;
-    margin-left: 40px;
 
-    img {
-      height: 90px;
-    }
-
-    .card-data {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 90px;
-      width: 100%;
-      margin-left: 50px;
+    li + li {
+      margin-left: 20px;
     }
   }
+`;
 
-  .list-card-content2 {
+export const ListDebtors = styled.div`
+  margin-top: 50px;
+  padding: 10px 0;
+  /* background: #cddc39; */
+  border-radius: 4px;
+  width: 180px;
+  height: 180px;
+
+  :hover {
+    border: 2px solid #65727f;
+    cursor: pointer;
+  }
+
+  .list-debtor-content1 {
+    /* border: 2px solid red; */
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 35%;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
 
-    button {
+    svg {
+      position: relative;
+      align-self: flex-end;
+      margin-right: 10px;
+      border-radius: 4px;
+
+      :hover {
+        cursor: pointer;
+        color: red;
+        /* background-color: ${darken(0.1, "#fff")}; */
+      }
+    }
+
+    img {
+      height: 120px;
+    }
+
+    .debtor-data {
+      /* border: 2px solid red; */
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #65727f;
-      border: 2px solid #fff;
-      border-radius: 4px;
-      width: 120px;
-      height: 50px;
-      color: #fff;
-      :hover {
-        background: ${lighten(0.05, "#65727f")};
-      }
-
-      img {
-        height: 25px;
-        margin-right: 5px;
-      }
+      height: 30px;
+      width: 100%;
     }
   }
 `;
