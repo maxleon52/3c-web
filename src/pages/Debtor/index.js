@@ -55,10 +55,9 @@ function Debtor() {
     try {
       setOnLoad(true);
       const response = await api.get("/debtors-search", {
-        params: { final_card: search },
+        params: { name: search },
       });
       setOnLoad(false);
-
       if (response.data <= 0 || response.data.message) {
         toast.info(response.data.message);
         setListDebtors(0);

@@ -25,7 +25,7 @@ function DebtorNew() {
 
   useEffect(() => {
     async function loadData() {
-      const response = await api.put(`/debtors/${_id}`);
+      const response = await api.get(`/debtors/${_id}`);
       const { name } = response.data;
 
       setName(name);
