@@ -18,6 +18,21 @@ Esta é um release inicial, v0.1, com o intuito apenas de válidar o MVP. Mais m
 
 # 🏗 Instalação
 
-- Clone o projeto e entre na pasta criada
-- Rode yarn ou npm install
+- Clone o projeto
+
+```
+git clone https://github.com/maxleon52/3c-web.git
+```
+
+- Entre na pasta criada e rode yarn ou npm install
+
+```
+cd 3c-web
+yarn
+```
+
 - Rode yarn start
+
+```
+yarn start
+```
